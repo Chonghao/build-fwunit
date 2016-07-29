@@ -1,0 +1,20 @@
+{
+  "global": [
+    {
+      "src": "name 0.0.0.0/0",
+      "name": "rule 2",
+      "sequence": "2",
+      "app": "tcp-80",
+      "action": "permit",
+      "dst": "name 64.0.0.0/2, 128.0.0.0/2"
+    },
+    {
+      "src": "name 0.0.0.0/0",
+      "name": "rule 3",
+      "sequence": "3",
+      "app": "tcp-80",
+      "action": "deny",
+      "dst": "name 0.0.0.0/0"
+    }
+  ]
+}

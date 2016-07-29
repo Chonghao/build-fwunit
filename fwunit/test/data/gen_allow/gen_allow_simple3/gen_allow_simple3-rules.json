@@ -1,0 +1,28 @@
+{
+    "global": [
+        {
+            "src": "name 64.0.0.0/2",
+            "name": "rule 1", 
+            "sequence": "1", 
+            "app": "tcp-5000",
+            "action": "permit",
+            "dst": "name 128.0.0.0/3"
+        }, 
+        {
+            "src": "name 32.0.0.0/3, 64.0.0.0/2, 128.0.0.0/3",
+            "name": "rule 2", 
+            "sequence": "2", 
+            "app": "tcp-5000",
+            "action": "deny",
+            "dst": "name 96.0.0.0/3, 128.0.0.0/2"
+        },
+        {
+            "src": "name 96.0.0.0/3, 128.0.0.0/2, 192.0.0.0/3",
+            "name": "rule 2",
+            "sequence": "2",
+            "app": "tcp-5000",
+            "action": "permit",
+            "dst": "name 64.0.0.0/2, 128.0.0.0/2, 192.0.0.0/3"
+        }
+    ]
+}

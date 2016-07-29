@@ -1,0 +1,26 @@
+{
+    "global": {
+        "attach": [], 
+        "address-sets": [], 
+        "addresses": [
+            {
+                "prefix": [
+                    "96.0.0.0/3"
+                ], 
+                "name": "name 96.0.0.0/3"
+            }, 
+            {
+                "prefix": [
+                    "64.0.0.0/3"
+                ], 
+                "name": "name 64.0.0.0/3"
+            }, 
+            {
+                "prefix": [
+                    "0.0.0.0/0"
+                ], 
+                "name": "name 0.0.0.0/0"
+            }
+        ]
+    }
+}

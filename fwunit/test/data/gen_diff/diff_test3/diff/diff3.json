@@ -1,0 +1,20 @@
+{
+    "allowed_access_flows": {
+        "(u'rule 1', u'rule 3')": [
+            {
+                "src": "0.0.0.0/0", 
+                "app": "tcp-80", 
+                "dst": "192.0.0.0/2"
+            }
+        ]
+    }, 
+    "blocked_access_flows": {
+        "(u'rule 2', u'rule 2')": [
+            {
+                "src": "0.0.0.0/0", 
+                "app": "tcp-80", 
+                "dst": "96.0.0.0/3"
+            }
+        ]
+    }
+}

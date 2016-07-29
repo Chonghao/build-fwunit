@@ -2,16 +2,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from __future__ import absolute_import
 import argparse
 import logging
 import sys
 import textwrap
 from fwunit import diff as diff_module
+from fwunit.json import process
+from fwunit.json import scripts
+from fwunit import diff_json as diff_json_module
 from fwunit import log
 from fwunit import types
 from fwunit.analysis import config
 import pkg_resources
 import json
+import pickle
 import prettyip
 
 # always use prettyip to print IPSets
@@ -25,6 +30,28 @@ def _setup(parser):
     log.setup(args.verbose)
     cfg = config.load_config(args.config_file)
     return args, cfg
+
+
+def process_modified_flow(app_info):
+    _ret = {
+        'app': app_info[0],
+        'src': str(app_info[1]),
+        'dst': str(app_info[2])
+    }
+    return _ret
+
+
+def massage_to_jsonable(diff_pic):
+    _ret = {}
+    for flow_type in ['allowed_access_flows', 'blocked_access_flows']:
+        flow_info = {}
+        for rule_pair, flow_by_app in diff_pic[flow_type].iteritems():
+            flow_info[str(rule_pair)] = []
+            for app_info in flow_by_app:
+                flow_info[str(rule_pair)].append(process_modified_flow(app_info))
+        _ret[flow_type] = flow_info
+    return _ret
+
 
 def main():
     description = textwrap.dedent("""Process security policies into fwunit rules""")
@@ -116,6 +143,7 @@ def query():
 
     args._func(args, cfg)
 
+
 def diff():
     description = textwrap.dedent("""Print differences between two rule sets (sources)""")
     parser = argparse.ArgumentParser(description=description)
@@ -131,3 +159,36 @@ def diff():
         logging.getLogger('').setLevel(logging.CRITICAL)
 
     diff_module.show_diff(cfg, args.left, args.right)
+
+
+def diff_json():
+    description = textwrap.dedent("""Calculate differences between two rule sets (sources) and write to file""")
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument('--old_policies_path', required=True)
+    parser.add_argument('--old_prefix_path', required=True)
+    parser.add_argument('--old_apps_dir', required=True)
+    parser.add_argument('--new_policies_path', required=True)
+    parser.add_argument('--new_prefix_path', required=True)
+    parser.add_argument('--new_apps_dir', required=True)
+    parser.add_argument('--output_path', required=True)
+
+    args = parser.parse_args(sys.argv[1:])
+
+    diff_path_pickle = args.output_path + '.pickle'
+    diff_path_json = args.output_path + '.json'
+
+    # all_apps_old = scripts.run(args.old_policies_path, args.old_prefix_path, args.old_apps_dir)
+    # all_apps_new = scripts.run(args.new_policies_path, args.new_prefix_path, args.new_apps_dir)
+
+    process.close_and_join_process_pool()
+
+    policy_diff = diff_json_module.make_diff(args.old_apps_dir, args.new_apps_dir)
+    policy_diff_jsonable = massage_to_jsonable(policy_diff)
+
+    with open(diff_path_pickle, "wb") as f:
+        pickle.dump(policy_diff, f)
+
+    with open(diff_path_json, "wb") as f:
+        json.dump(policy_diff_jsonable, f, indent=4)
+
+    diff_json_module.close_and_join_diff_pool()

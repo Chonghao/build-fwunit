@@ -46,6 +46,7 @@ setup(
             'fwunit = fwunit.scripts:main',
             'fwunit-query = fwunit.scripts:query',
             'fwunit-diff = fwunit.scripts:diff',
+            'fwunit-diff-json = fwunit.scripts:diff_json',
         ],
         "fwunit.types": [
             'srx = fwunit.srx.scripts:run [srx]',
