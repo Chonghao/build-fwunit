@@ -8,7 +8,7 @@ from fwunit.json import scripts
 import fwunit.json.process as process
 
 cur_dir = os.path.dirname(__file__)
-data_dir = os.path.join(cur_dir, '../data/gen_allow')
+data_dir = os.path.abspath(os.path.join(cur_dir, '../data/gen_allow'))
 
 gen_allow_simple1_expect = {
     'tcp-80': [

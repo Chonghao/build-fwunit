@@ -9,7 +9,7 @@ import fwunit.diff_json as diff
 import fwunit.json.process as process
 
 cur_dir = os.path.dirname(__file__)
-data_dir = os.path.join(cur_dir, '../data/gen_diff')
+data_dir = os.path.abspath(os.path.join(cur_dir, '../data/gen_diff'))
 
 gen_diff_diff1_expect = {'allowed_access_flows': {('rule 1', 'rule 1'): [
     ['tcp-80', IPSet([IP('0.0.0.0/1')]), IPSet([IP('128.0.0.0/1')])]]}, 'blocked_access_flows': {}}
