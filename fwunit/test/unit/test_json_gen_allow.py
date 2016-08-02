@@ -151,5 +151,5 @@ def test_json_gen_allow_simple3():
     eq_(gen_allow_simple3_expect, my_result)
 
 
-def test_close_pools():
-    process.close_and_join_process_pool()
+# def test_close_pools():
+#     process.close_and_join_process_pool()
