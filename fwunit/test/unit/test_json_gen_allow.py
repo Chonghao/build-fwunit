@@ -6,6 +6,7 @@ from fwunit.ip import IP, IPSet
 from fwunit.types import RuleNameMappingEntry, FWRuleSequence, Rule
 from fwunit.json import scripts
 import fwunit.json.process as process
+from fwunit.test.util.path_util import ensure_dir
 
 cur_dir = os.path.dirname(__file__)
 data_dir = os.path.abspath(os.path.join(cur_dir, '../data/gen_allow'))
@@ -113,6 +114,8 @@ def test_json_gen_allow_simple1():
     policies_path = os.path.join(test_dir, 'gen_allow_simple1-rules.json')
     globals_path = os.path.join(test_dir, 'gen_allow_simple1-prefix.json')
     apps_dir = os.path.join(test_dir, 'apps')
+    ensure_dir(apps_dir)
+
     all_apps = scripts.run(policies_path, globals_path, apps_dir)
 
     my_result = get_apps_dict(all_apps, apps_dir)
@@ -125,6 +128,8 @@ def test_json_gen_allow_simple2():
     policies_path = os.path.join(test_dir, 'gen_allow_simple2-rules.json')
     globals_path = os.path.join(test_dir, 'gen_allow_simple2-prefix.json')
     apps_dir = os.path.join(test_dir, 'apps')
+    ensure_dir(apps_dir)
+
     all_apps = scripts.run(policies_path, globals_path, apps_dir)
 
     my_result = get_apps_dict(all_apps, apps_dir)
@@ -137,6 +142,8 @@ def test_json_gen_allow_simple3():
     policies_path = os.path.join(test_dir, 'gen_allow_simple3-rules.json')
     globals_path = os.path.join(test_dir, 'gen_allow_simple3-prefix.json')
     apps_dir = os.path.join(test_dir, 'apps')
+    ensure_dir(apps_dir)
+
     all_apps = scripts.run(policies_path, globals_path, apps_dir)
 
     my_result = get_apps_dict(all_apps, apps_dir)
