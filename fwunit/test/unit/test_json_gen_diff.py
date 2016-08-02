@@ -7,6 +7,7 @@ from fwunit.ip import IP, IPSet
 from fwunit.json import scripts
 import fwunit.diff_json as diff
 import fwunit.json.process as process
+from fwunit.test.util.path_util import ensure_dir
 
 cur_dir = os.path.dirname(__file__)
 data_dir = os.path.abspath(os.path.join(cur_dir, '../data/gen_diff'))
@@ -20,25 +21,6 @@ gen_diff_diff2_expect = {'allowed_access_flows': {}, 'blocked_access_flows': {
 gen_diff_diff3_expect = {'allowed_access_flows': {('rule 1', 'rule 3'): [
     ['tcp-80', IPSet([IP('0.0.0.0/0')]), IPSet([IP('192.0.0.0/2')])]]}, 'blocked_access_flows': {
     ('rule 2', 'rule 2'): [['tcp-80', IPSet([IP('0.0.0.0/0')]), IPSet([IP('96.0.0.0/3')])]]}}
-
-
-def clear_dir(dir_path):
-    for file_name in os.listdir(dir_path):
-        file_path = os.path.join(dir_path, file_name)
-        try:
-            if os.path.isfile(file_path):
-                os.unlink(file_path)
-        except Exception as e:
-            log.fatal(e)
-
-
-def ensure_dir(dir_path):
-    if not os.path.exists(dir_path):
-        # if directory does not exit, create it
-        os.makedirs(dir_path)
-    else:
-        # if directory already exists, clear directory
-        clear_dir(dir_path)
 
 
 def process_modified_flow(app_info):
@@ -173,6 +155,6 @@ def test_diff3():
     eq_(gen_diff_diff3_expect, policy_diff)
 
 
-def test_close_pools():
-    process.close_and_join_process_pool()
-    diff.close_and_join_diff_pool()
+# def test_close_pools():
+#     process.close_and_join_process_pool()
+#     diff.close_and_join_diff_pool()
